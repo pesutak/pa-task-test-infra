@@ -1,0 +1,38 @@
+name: task-stg
+services:
+
+  my-service:
+    image: ${REPOSITORY}:my-service-${MY_SERVICE_VERSION}
+    build:
+      context: ../../my-service
+    networks:
+      - pax-network
+    environment:
+      INTERVAL: ${MY_SERVICE_INTERVAL:-5000}
+      WHAT: ${MY_SERVICE_WHAT:-Hello World}
+    labels:
+      task.managed: "true"
+      pax.enabled: "true"
+      pax.tagVar: "MY_SERVICE_TAG"
+      pax.repo: "my-service"
+      pax.mergeFrom: "devel"
+      pax.mergeTo: "stg"
+
+  mx-service:
+    image: ${REPOSITORY}:mx-service-${MX_SERVICE_VERSION}
+    networks:
+      - pax-network
+    environment:
+      INTERVAL: ${MX_SERVICE_INTERVAL:-5000}
+      WHAT: ${MX_SERVICE_WHAT:-Hello World}
+    labels:
+      task.managed: "true"
+      pax.enabled: "true"
+      pax.tagVar: "MX_SERVICE_TAG"
+      pax.repo: "mx-service"
+      pax.mergeFrom: "devel"
+      pax.mergeTo: "stg"
+
+networks:
+  pax-network:
+    driver: bridge

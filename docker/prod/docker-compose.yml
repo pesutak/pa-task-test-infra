@@ -1,0 +1,18 @@
+services:
+  
+  my-service:
+    image: ${REPOSITORY}:${MY_SERVICE_TAG}
+    networks:
+      - pax-network
+    environment:
+      INTERVAL: ${MY_SERVICE_INTERVAL:-5000}
+      WHAT: ${MY_SERVICE_WHAT:-Hello World}
+    labels:
+      pax.enabled: "true"
+      pax.tagVar: "MY_SERVICE_TAG"
+      pax.repo: "my-service"
+      pax.mergeFrom: "devel"
+      pax.mergeTo: "stg"
+networks:
+  pax-network:
+    driver: bridge
